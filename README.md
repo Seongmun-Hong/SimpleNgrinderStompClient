@@ -1,8 +1,7 @@
 # NgrinderStompTest
 
-```
 test script example
-
+```
 import random
 from net.grinder.script.Grinder import grinder
 from net.grinder.script import Test
