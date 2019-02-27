@@ -2,7 +2,6 @@ package com.stomp.client;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -54,7 +53,7 @@ public class StompClient {
 		
 	}
 
-	public void subscribeGreetings(String topic) {
+	public void subscribe(String topic) {
 
 		this.stompSession.subscribe(topic, new StompFrameHandler() {
 
@@ -63,7 +62,7 @@ public class StompClient {
 			}
 
 			public void handleFrame(StompHeaders stompHeaders, Object o) {
-				System.out.println("Received greeting " + new String((byte[]) o));
+				System.out.println("[" + topic + "]" + " subscribe data : "  + new String((byte[]) o));
 			}
 
 		});
@@ -97,8 +96,8 @@ public class StompClient {
 		/* example */
 		StompClient helloClient = new StompClient();
 		helloClient.connect("http://localhost:8080/chat");
-		helloClient.subscribeGreetings("chatroom/156");
-		helloClient.sendMsg("topic", "{ sender\":1,\"msg\":\" msg  \",\"msg_type\":\"m\"}");
+		helloClient.subscribe("chatroom/156");
+		helloClient.sendMessage("topic", "{ sender\":1,\"msg\":\" msg  \",\"msg_type\":\"m\"}");
 		helloClient.disconnect();
 
 	}
