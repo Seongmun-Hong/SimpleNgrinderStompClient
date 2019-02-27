@@ -71,7 +71,7 @@ public class StompClient {
 
 	public int sendMessage(String topic, String msg) {
 
-		this.stompSession.send(topic, msg);
+		this.stompSession.send(topic, msg.getBytes());
 
 		return 1;
 
@@ -96,7 +96,7 @@ public class StompClient {
 		/* example */
 		StompClient helloClient = new StompClient();
 		helloClient.connect("http://localhost:8080/chat");
-		helloClient.subscribe("chatroom/156");
+		helloClient.subscribe("/chatroom/156");
 		helloClient.sendMessage("topic", "{ sender\":1,\"msg\":\" msg  \",\"msg_type\":\"m\"}");
 		helloClient.disconnect();
 
