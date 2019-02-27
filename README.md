@@ -25,6 +25,7 @@ class TestRunner:
 			grinder.statistics.forLastTest.success = 0
 		else:
 			grinder.statistics.forLastTest.success = 1
+		self.client.disconnect()
 
 	def conn(self):
 		self.client = StompClient()
