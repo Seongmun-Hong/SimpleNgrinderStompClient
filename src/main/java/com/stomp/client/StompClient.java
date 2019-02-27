@@ -19,16 +19,19 @@ import org.springframework.web.socket.sockjs.client.Transport;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 import org.springframework.web.socket.sockjs.frame.Jackson2SockJsMessageCodec;
 
-/**
- * Created by nick on 30/09/2015.
- */
 public class StompClient {
 
 	private final static WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
 
 	private StompSession stompSession = null;
 
-	public int connect(String url) throws InterruptedException, ExecutionException {
+	public void addHeader(String headerName, String headerValue) {
+		
+		headers.add(headerName, headerValue);
+		
+	}
+
+	public int connect(String url) {
 
 		Transport webSocketTransport = new WebSocketTransport(new StandardWebSocketClient());
 		List<Transport> transports = Collections.singletonList(webSocketTransport);
@@ -39,12 +42,20 @@ public class StompClient {
 		WebSocketStompClient stompClient = new WebSocketStompClient(sockJsClient);
 
 		ListenableFuture<StompSession> f = stompClient.connect(url, headers, new MyHandler(), "localhost", 8080);
-		this.stompSession = f.get();
-		return 1;
-
+		
+		try {
+			this.stompSession = f.get();
+			return 1;
+		} catch (InterruptedException e) {
+			return -1;
+		} catch (ExecutionException e) {
+			return -1;
+		}
+		
 	}
 
-	public void subscribeGreetings(String topic) throws ExecutionException, InterruptedException {
+	public void subscribeGreetings(String topic) {
+
 		this.stompSession.subscribe(topic, new StompFrameHandler() {
 
 			public Type getPayloadType(StompHeaders stompHeaders) {
@@ -52,38 +63,44 @@ public class StompClient {
 			}
 
 			public void handleFrame(StompHeaders stompHeaders, Object o) {
-				// logger.info("Received greeting " + new String((byte[]) o));
+				System.out.println("Received greeting " + new String((byte[]) o));
 			}
+
 		});
+		
 	}
 
-	public int sendMsg(String msg, String chatroom_idx) {
-		String sendMsg = "{" + "\"sender\":1,\"msg\":\"" + msg + "\",\"msg_type\":\"m\"}";
-		this.stompSession.send("/chatroom/" + chatroom_idx, sendMsg.getBytes());
+	public int sendMsg(String topic, String msg) {
+
+		this.stompSession.send(topic, msg);
+
 		return 1;
+
 	}
 
 	private class MyHandler extends StompSessionHandlerAdapter {
+
 		public void afterConnected(StompSession stompSession, StompHeaders stompHeaders) {
-			// logger.info("Now connected");
+
 		}
+
 	}
 
 	public void disconnect() {
+
 		this.stompSession.disconnect();
+
 	}
 
 	public static void main(String[] args) throws Exception {
+
+		/* example */
 		StompClient helloClient = new StompClient();
-		helloClient.connect("http://192.168.0.6:8080/gs-guide-websocket");
-
-		// logger.info("Subscribing to greeting topic using session " +
-		// stompSession);
-		// helloClient.subscribeGreetings(stompSession);
-
-		// logger.info("Sending hello message" + stompSession);
-		helloClient.sendMsg("msh", "156");
+		helloClient.connect("http://localhost:8080/chat");
+		helloClient.subscribeGreetings("chatroom/156");
+		helloClient.sendMsg("topic", "{ sender\":1,\"msg\":\" msg  \",\"msg_type\":\"m\"}");
 		helloClient.disconnect();
+
 	}
 
 }
