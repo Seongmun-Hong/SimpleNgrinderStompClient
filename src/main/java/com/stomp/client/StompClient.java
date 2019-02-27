@@ -70,7 +70,7 @@ public class StompClient {
 		
 	}
 
-	public int sendMsg(String topic, String msg) {
+	public int sendMessage(String topic, String msg) {
 
 		this.stompSession.send(topic, msg);
 
