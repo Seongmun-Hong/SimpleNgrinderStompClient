@@ -13,15 +13,13 @@ from org.json import JSONObject, JSONArray
 from com.stomp.client import StompClient
 
 test0 = Test(0, "conn")
-params = []
 class TestRunner:
 	def __init__(self):
 		grinder.statistics.delayReports=True
-		params.append(NVPair("json", "data"))
 		self.conn()
 
 	def __call__(self):
-		result = self.client.sendMessage("/chatroom/151", params)
+		result = self.client.sendMessage("/chatroom/151", "{\"sender\":1,\"msg\":\"msg\",\"msg_type\":\"m\"}")
 		if not result:
 			err("send msg error")
 			grinder.statistics.forLastTest.success = 0
