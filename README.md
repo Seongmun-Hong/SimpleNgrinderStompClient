@@ -21,13 +21,13 @@
 
 
 ## methods
-##### 1. addHeader(String headerName, String headerValue)
+#### 1. addHeader(String headerName, String headerValue)
 
 #### 2. connect(String url)
-1 on success Return -1 on failure
+  - 1 on success Return -1 on failure
 
 #### 3. sendMessage(String topic, String msg)
-1 on success Return -1 on failure
+  - 1 on success Return -1 on failure
 
 #### 4. disconnect()
 
