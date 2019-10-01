@@ -6,7 +6,7 @@
 ## useage 
 
 1. **git clone** and **mvn build** or **download jar file**.
-##### - <a href="https://bit.ly/2TaNkuv" target="_blank">download jar file</a>
+   - <a href="https://bit.ly/2TaNkuv" target="_blank">download jar file</a>
 
 2. run ngrinder and move to script tab
 
@@ -15,7 +15,7 @@
 4. **create script** for **jyphon**
 
 5. **import** stomp client
-##### from com.stomp.client import StompClient
+   - from com.stomp.client import StompClient
 
 6. connection and message send 
 
